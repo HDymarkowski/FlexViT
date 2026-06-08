@@ -1,6 +1,6 @@
 # FlexViT: A Flexible FPGA-based Accelerator for Edge Vision Transformers
 
-FlexViT is a reconfigurable FPGA accelerator for Vision Transformer (ViT) inference on resource-constrained edge devices. Built using the SECDA-TFLite framework, FlexViT adopts a hardware-software co-design approach that maps both fully connected (FC) and convolutional (CONV) layers onto a unified high-throughput GEMM engine via a runtime im2col transformation. 
+FlexViT is a reconfigurable FPGA accelerator for Vision Transformer (ViT) inference on resource-constrained edge devices. Built using the SECDA-TFLite framework, FlexViT adopts a hardware-software co-design approach that maps both fully connected (FC) and convolutional (CONV) layers onto a unified high-throughput GEMM engine via a runtime im2col transformation. This design enables consistent end-to-end performance improvements across both standard and hybrid ViT architectures.
 
 This repository provides the hardware bitstreams and the custom TensorFlow Lite (TFLite) delegate source code. It is designed to be integrated directly into the SECDA-TFLite build environment for evaluation on the AMD Zynq-7000 SoC (PYNQ-Z2).
 
@@ -13,8 +13,8 @@ The codebase is organized as follows:
     FlexViT/                   
     ├── bitstreams/   - Accelerator bitstreams                          
     ├── extra_files/  - Configuration files for SECDA-TFLite                      
-    ├── models/       - Models needed for experiments                   
-    ├── src/          - Source code                                
+    ├── models/       - Models used in the paper                   
+    ├── src/          - Source code                              
     └── README.md
 
 ---
