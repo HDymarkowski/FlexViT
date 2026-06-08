@@ -60,8 +60,8 @@ To reproduce the results presented in our FPL 2026 paper, reviewers should evalu
 - ViT-T (ImageNet-21k) [src](https://github.com/martinsbruveris/tensorflow-image-models)
 - DeiT-T (ImageNet-1k) [src](https://github.com/martinsbruveris/tensorflow-image-models)
 - Swin-T (ImageNet-1k) [src](https://github.com/martinsbruveris/tensorflow-image-models)
-- MobileViT-S (ImageNet-1k) [src](TODO)
-- EfficientViT-b1 (ImageNet-1k) [src](TODO)
+- MobileViT-S (ImageNet-1k) [src](https://huggingface.co/timm/mobilevit_s.cvnets_in1k)
+- EfficientViT-b1 (ImageNet-1k) [src](https://huggingface.co/timm/efficientvit_b1.r224_in1k)
 
 **2. Functional Correctness:** Before benchmarking, verify that the hardware executes the model accurately. Run the model through the hardware using the id_vit_delegate_9 configuration. The inference outputs produced by the hardware accelerator must match the software execution outputs within TFLite's acceptable passing range (cosine similarity > 99%).
 
