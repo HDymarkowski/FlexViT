@@ -10,12 +10,12 @@ This repository provides the hardware bitstreams and the custom TensorFlow Lite 
 
 The codebase is organized as follows:
 
-FlexViT/                   
-├── bitstreams/   - Accelerator bitstreams                          
-├── extra_files/  - Configuration files for SECDA-TFLite                      
-├── models/       - Models needed for experiments                    
-├── src/          - Source code                                
-└── README.md
+    FlexViT/                   
+    ├── bitstreams/   - Accelerator bitstreams                          
+    ├── extra_files/  - Configuration files for SECDA-TFLite                      
+    ├── models/       - Models needed for experiments                   
+    ├── src/          - Source code                                
+    └── README.md
 
 ---
 
@@ -24,33 +24,31 @@ FlexViT/
 * Target Hardware: PYNQ-Z2 board (AMD Zynq-7000 SoC).
 * Operating System: PYNQ Linux (Ubuntu base).
 * Build System: Bazel.
-* Dependencies: SECDA-TFLite framework, Tensorflow Lite.
+* Dependencies: SECDA-TFLite framework, TensorFlow Lite.
 
 ---
 
 ## Integration with SECDA-TFLite
 
-Because FlexViT relies on SECDA-TFLite's hardware-software co-design methodology, this repository is intendet to be build within the host framework rather than in isolation. The custom TFLite delegate located in 'src/v9' acts as an extension to the SECDA-TFLite runtime.
+Because FlexViT relies on SECDA-TFLite's hardware-software co-design methodology, this repository is intended to be built within the host framework rather than in isolation. The custom TFLite delegate located in 'src/v9' acts as an extension to the SECDA-TFLite runtime.
 
-When invoked, the SECDA-TFLite framework delegates supported graph operations to our custom driver. The delegate intercepts fully connected (FC) and convolutional (CONV) operations from the INT8 quantized model. For CONV layers, it performas a runtime 'im2col' transformation on the CPU, linearizing them into standard GEMM operations. The host driver then analyzes the layer dimensions to dynamically select between Dense or Mobile execution modes before dispatching the payload to the FlexViT hardware.
+When invoked, the SECDA-TFLite framework delegates supported graph operations to our custom driver. The delegate intercepts fully connected (FC) and convolutional (CONV) operations from the INT8 quantized model. For CONV layers, it performs a runtime 'im2col' transformation on the CPU, linearizing them into standard GEMM operations. The host driver then analyzes the layer dimensions to dynamically select between Dense or Mobile execution modes before dispatching the payload to the FlexViT hardware.
 
 **SETUP INSTRUCTIONS:**
 
 **1. Base Setup:** Initialize and set up the base SECDA-TFLite repository by following the official installation instructions in the main SECDA-TFLite repository (https://github.com/gicLAB/SECDA-TFLite). Also, pull the code from this repo.
 
-**2. Copy Files:** Create a folder 'SECDA-TFLite/src/secda_delegates' called 'vit_delegate' and copy the 'src/v9' folder from this repo into it.
+**2. Copy Files:** Create a folder named 'vit_delegate' inside 'SECDA-TFLite/src/secda_delegates' and copy the 'src/v9' folder from this repo into it.
 
-**3. Configure Files:** In the folder '/extra_files', we provide you with extensions for you to add to files in the SECDA-TFLite repository to configure them so that you can run the relevant experiments. If these files do not already exist you can just copy the entire file in instead of extending a pre-existing file. The files are as follows:
-    - launch.json - 'SECDA-TFLite/tensorflow/.vscode/launch.json'
-    - task.json - 'SECDA-TFLite/tensorflow/.vscode/task.json'
-    - vit_9_0.json - 'SECDA-TFLite/hardware_automation/configs/vit_9_0.json'
+**3. Configure Files:** In the folder '/extra_files', we provide configuration extensions to add to files in the SECDA-TFLite repository so that you can run the relevant experiments. If these files do not already exist, you can just copy the entire file in instead of extending a pre-existing file. The files are as follows:                     
+- launch.json - 'SECDA-TFLite/tensorflow/.vscode/launch.json'                     
+- task.json - 'SECDA-TFLite/tensorflow/.vscode/task.json'                  
+- vit_9_0.json - 'SECDA-TFLite/hardware_automation/configs/vit_9_0.json'             
 
-**4. Run Experinents:** SECDA-TFLite allows you to run experiments two ways
-    - In order to check correctness in software, you can run experiments in software using VSCode's *run and debug* system. This will tell you whether or not the accelerator design performs correctly in simulation.
-    - In order to check correctness in hardware, you must use SECDA-TFLite's 'hardware_automation' tool to deploy the bitstream and run the accelerated inference directly on your own FPGA. From here you can:
-      - Test correcness using *id_vit_delegate_9*
-      - Test perofrmance using *bm_vit_delegate_9*
-      - Test power using a power meter connected to the board
+**4. Run Experiments:** SECDA-TFLite allows you to run experiments two ways:
+  - In order to check correctness in software, you can run experiments in software using VS Code's *run and debug* system. This will tell you whether or not the accelerator design performs correctly in simulation.                 
+  - In order to check correctness in hardware, you must use SECDA-TFLite's 'hardware_automation' tool to deploy the bitstream and run the accelerated inference directly on your own FPGA. From here you can:
+    - Test correctness using *id_vit_delegate_9* - Test performance using *bm_vit_delegate_9* - Test power using a power meter connected to the board                            
 
 ---
 
@@ -68,11 +66,11 @@ To reproduce the results presented in our FPL 2026 paper, reviewers should evalu
 **2. Functional Correctness:** Before benchmarking, verify that the hardware executes the model accurately. Run the model through the hardware using the id_vit_delegate_9 configuration. The inference outputs produced by the hardware accelerator must match the software execution outputs within TFLite's acceptable passing range (cosine similarity > 99%).
 
 **3. Latency Evaluation:** To measure end-to-end and layer-specific speedups, run the models using the bm_vit_delegate_9 configuration.
-    - CPU Baseline: Execute the inference strictly on the ARM Cortex-A9 CPU with NEON SIMD instructions enabled.
-    - Hardware Accelerated: Execute using the FlexViT delegate and the VIT_9_0.bit bitstream clocked at 200MHz.
-    - All latency metrics should be averaged over 100 inference runs to account for system variance.
+- CPU Baseline: Execute the inference strictly on the ARM Cortex-A9 CPU with NEON SIMD instructions enabled.
+- Hardware Accelerated: Execute using the FlexViT delegate and the VIT_9_0.bit bitstream clocked at 200MHz.
+- All latency metrics should be averaged over 100 inference runs to account for system variance.
 
-**4. Energy Evaluation** Energy per inference (Joules) is measured externally using a Makerfocus USB power meter connected to the PYNQ-Z2 board.
+**4. Energy Evaluation:** Energy per inference (Joules) is measured externally using a Makerfocus USB power meter connected to the PYNQ-Z2 board.
 
 Important Note for CPU Baseline: To ensure a fair comparison and mitigate the static power overhead of the FPGA fabric during CPU-only execution, configure the FPGA with the minimal baseline bitstream (CPU_1_0.bit) rather than the full FlexViT bitstream.
 
