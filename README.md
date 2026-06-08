@@ -10,11 +10,11 @@ This repository provides the hardware bitstreams and the custom TensorFlow Lite 
 
 The codebase is organized as follows:
 
-FlexViT/
-├── bitstreams/   - Accelerator bitstreams                 
-├── extra_files/  - Configuration files for SECDA-TFLite
-├── models/       - Models needed for experiments
-├── src/          - Source code               
+FlexViT/                   
+├── bitstreams/   - Accelerator bitstreams                          
+├── extra_files/  - Configuration files for SECDA-TFLite                      
+├── models/       - Models needed for experiments                    
+├── src/          - Source code                                
 └── README.md
 
 ---
