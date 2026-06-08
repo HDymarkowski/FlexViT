@@ -14,7 +14,7 @@ FlexViT/
 ├── bitstreams/   - Bitstreams for running the design on FPGA                  
 ├── extra_files/  - Files for configuring SECDA-TFLite to work with the code in this repo
 ├── models/       - Models for running the experiments found in the paper
-├── src/          - Source code for most recent vetsion (*v9* as of June 2026)                
+├── src/          - Source code for most recent version (v9 as of June 2026)                
 └── README.md
 
 ---
